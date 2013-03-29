@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+		ASCII channel
+		</title>
+	</head>
+	<body>
+		<h1>/ASCII/</h1>
+	
+		<form method = "post">
+			<label>
+				<div>title</div>
+				<input type = "text" name = "title",value={{title}}>
+			</label>
+		
+			<label>
+				<div>art</div>
+				<textarea name = "art">{{art}}</textarea>
+			</label>
+			
+			<div class="error">{{error}}</div>
+			
+			<input type = "submit" value = "Submit Art">
+		</form>
+	</body>
+</hmtl>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+<input type="button" value="Hide" id="toggle_message">
+<p id="message">You can see this</p>
+</body>
+<script src="js/jquery-1.7.2.min.js"></script>
+<script>
+$('#toggle_message').click(function(){
+var value = $('#toggle_message').attr('value');
+$('#message').toggle('fast');
+
+if(value == 'Hide'){
+$('#toggle_message').attr('value','Show');
+}else if (value == 'Show'){
+$('#toggle_message').attr('value','Hide');
+}
+});
+</script>
+</html>
