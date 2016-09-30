@@ -5,7 +5,7 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /helloWorld
+- url: /.*
   script: main.app
 
 libraries:
