@@ -18,7 +18,7 @@ form="""
 rot13_form="""
 <form method="post">
 <h1>Enter some text to ROT13:</h1>
-<textarea name="data">%(data)s</textarea>
+<textarea name="text">%(data)s</textarea>
 <input type="submit">
 </form>
 """
@@ -96,7 +96,7 @@ class Rot13Handler(webapp2.RequestHandler):
         self.write_form()
 
     def post(self):
-        data = self.request.get('data')
+        data = self.request.get('text')
         res = self.rot13(data)
         self.write_form(res)
 
