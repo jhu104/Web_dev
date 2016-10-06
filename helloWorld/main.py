@@ -166,12 +166,12 @@ class SignupHandler(BaseHandler):
             print(username)
             self.render_front("signup.html", email=email, username=username, error=error)
         else:
-            self.redirect("/welcome")
+            self.redirect("/welcome?username="+username)
 
 class SuccessHandler(webapp2.RequestHandler):
     def get(self):
         username=self.request.get("username")
-        self.response.write("Welcome "+username)
+        self.response.write("<h2>Welcome "+username+"!</h2>")
 
 app = webapp2.WSGIApplication([ ('/', MainPage), 
                                 ('/thanks', ThanksHandler), 
