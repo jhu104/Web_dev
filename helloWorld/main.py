@@ -121,7 +121,7 @@ class Rot13Handler(webapp2.RequestHandler):
 
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 PASSWORD_RE = re.compile(r"^.{3,20}$")
-EMAIL_RE = re.compile(r"^[\S]+@[\S]+.[\S]+$")
+EMAIL_RE = re.compile(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
 
 class SignupHandler(BaseHandler):
     def valid_username(self, username):
