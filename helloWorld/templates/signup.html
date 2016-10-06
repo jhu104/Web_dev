@@ -1,30 +1,70 @@
-<doctype html>
+<!DOCTYPE html>
+
 <html>
   <head>
-    <title>Signup</title>
+    <title>Sign Up</title>
+    <style type="text/css">
+      .label {text-align: right}
+      .error {color: red}
+    </style>
+
   </head>
+
   <body>
-    <h1>Signup</h1>
+    <h2>Signup</h2>
     <form method="post">
-        <table>
-          <tbody>
-              <tr>
-                  <td>Username</td><td><input type="text" value="{{username}}" name="username"></td><td>{{error.user_error}}</td>
-              </tr>
-              <tr>
-                  <td>Password</td><td><input type="password" name="password"></td>><td>{{error.valid_pass_error}}</td>
-              </tr>
-              <tr>
-                  <td>Verify Password</td><td><input type="password" name="verify"></td>><td>{{error.pass_match_error}}</td>
-              </tr>
-              <tr>
-                  <td>Email(optional)</td><td><input type="email" value="{{email}}" name="email"></td>><td>{{error.email_error}}</td>
-              </tr>
-              <tr>
-                  <td><input type="submit"></td>
-              </tr>
-          </tbody>
+      <table>
+        <tr>
+          <td class="label">
+            Username
+          </td>
+          <td>
+            <input type="text" name="username" value="{{username}}">
+          </td>
+          <td class="error">
+            {{error.user_error}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Password
+          </td>
+          <td>
+            <input type="password" name="password" value="">
+          </td>
+          <td class="error">
+            {{error.valid_pass_error}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Verify Password
+          </td>
+          <td>
+            <input type="password" name="verify" value="">
+          </td>
+          <td class="error">
+            {{error.pass_match_error}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Email (optional)
+          </td>
+          <td>
+            <input type="text" name="email" value="{{email}}">
+          </td>
+          <td class="error">
+            {{error.email_error}}
+          </td>
+        </tr>
       </table>
+
+      <input type="submit">
     </form>
   </body>
+
 </html>
