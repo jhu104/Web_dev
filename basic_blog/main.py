@@ -22,7 +22,7 @@ class BaseHandler(webapp2.RequestHandler):
         return t.render(params)
 
     def render_new_post(self, subject="",content="",error=""):
-        self.render("new_post.html")
+        self.render("new_post.html",content=content, subject=subject, error=error)
 
     def render_front(self):
         posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
