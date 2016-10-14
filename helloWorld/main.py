@@ -50,7 +50,7 @@ def valid_year(year):
             return year
 class BaseHandler(webapp2.RequestHandler):
     def render_front(self, template, email="",username="",error=""):
-        self.render(template,email=email,error=error,username=username)
+        self.render(template,n=10)
     
     def render(self, template, **kw):
         self.response.out.write(self.render_str(template, **kw))
@@ -134,7 +134,7 @@ class SignupHandler(BaseHandler):
         return EMAIL_RE.match(email)
 
     def get(self):
-        self.render_front("signup.html")
+        self.render_front("fizzbuzz.html")
 
     def post(self):
         username =  self.request.get("username")

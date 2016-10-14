@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}New Post{%endblock%}
+{% block content %}
+<form method="post">
+  <input placeholder="Subject" type="text" name="subject" value={{subject}}>
+  <textarea placeholder="Content" name="content">{{content}}</textarea>
+  <input type="submit" value="Submit">
+  <span>{{error}}</span>
+</form>
+{% endblock %}
