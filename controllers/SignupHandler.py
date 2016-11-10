@@ -44,6 +44,5 @@ class SignupHandler(BaseHandler):
             else:
                 user = User.register(username, password)
                 user.put()
-                self.login(username)
+                self.login(user)
                 self.redirect("/welcome")
-                

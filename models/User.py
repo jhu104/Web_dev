@@ -24,9 +24,9 @@ class User(db.Model):
             return u
 
     @classmethod
-    def register(cls, name, pw, email = None):
-        pw_hash = hashing.make_pw_hash(name, pw)
+    def register(cls, username, pw, email = None):
+        pw_hash = hashing.make_pw_hash(username, pw)
         return User(parent = hashing.users_key(),
-                    name = name,
+                    username = username,
                     password = pw_hash,
                     email = email)

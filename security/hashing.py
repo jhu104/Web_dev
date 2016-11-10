@@ -11,7 +11,7 @@ def hash_str(str):
 
 def make_secure_val(string):
     """make_secure_val(str) -> str"""
-    return "%s|%s" % (string, hash_str(str))
+    return "%s|%s" % (string, hash_str(string))
 
 def check_secure_val(hash):
     """check_secure_val(hash) -> int"""
