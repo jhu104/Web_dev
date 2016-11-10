@@ -38,9 +38,12 @@ class SignupHandler(BaseHandler):
         if not valid:
             self.render("signup.html", email=email, username=username, error=error)
         else:
-            user_hash = hashing.make_secure_val(username)
-            pw_hash = hashing.make_pw_hash(username, password)
-            user = User(username=username, email=email, password=pw_hash)
-            user.put()
-            self.response.headers.add_header('Set-Cookie', str('name='+user_hash+'; Path=/'))
-            self.redirect("/welcome")
+            user = User.by_name(username)
+            if user:
+                self.render("signup.html", error={'user_error': "User already exists."})
+            else:
+                user = User.register(username, password)
+                user.put()
+                self.login(username)
+                self.redirect("/welcome")
+                
