@@ -3,6 +3,7 @@ import jinja2
 import os
 from security import hashing
 from models.User import User
+import json
 
 template_dir = os.path.join(os.path.dirname(__file__), '../templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
@@ -18,6 +19,11 @@ class BaseHandler(webapp2.RequestHandler):
 
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
+
+    def render_json(self, jsonData):
+        json_txt = json.dumps(jsonData)
+        self.response.headers['Content-Type'] = 'application/json; charset=UTF-8'
+        self.write(json_txt)
 
     def set_secure_cookie(self, name, val):
         cookie_val = hashing.make_secure_val(val)
@@ -40,3 +46,8 @@ class BaseHandler(webapp2.RequestHandler):
         webapp2.RequestHandler.initialize(self, *a, **kw)
         uid = self.read_secure_cookie('user_id')
         self.user = uid and User.by_id(int(uid))
+
+        if self.request.url.endswith('json'):
+            self.format = 'json'
+        else:
+            self.format = 'html'
