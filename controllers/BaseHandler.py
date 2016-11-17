@@ -86,3 +86,7 @@ class BaseHandler(webapp2.RequestHandler):
             self.client.set(str(id)+'u', last_update)
         last_update = datetime.strptime(last_update, '%b %d %Y %I:%M%p')
         return (post, last_update)
+
+    def clearCache(self):
+        self.client.flush_all()
+        self.redirect('/')

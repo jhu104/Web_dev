@@ -12,6 +12,7 @@ from controllers.PostHandler import PostHandler
 from controllers.SignupHandler import SignupHandler
 from controllers.SuccessHandler import SuccessHandler
 from controllers.ASCIIChanHandler import ASCIIChanHandler
+from controllers.FlushHandler import FlushHandler
 
 app = webapp2.WSGIApplication([ 
     ('/(?:.json)?', MainHandler),
@@ -21,5 +22,6 @@ app = webapp2.WSGIApplication([
     ('/blog/([0-9]+)(?:.json)?', PostHandler),
     ('/signup', SignupHandler),
     ('/welcome', SuccessHandler),
-    ('/asciichan', ASCIIChanHandler)
+    ('/asciichan', ASCIIChanHandler),
+    ('/flush', FlushHandler)
 ], debug=True)
