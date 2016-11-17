@@ -8,12 +8,14 @@ class NewPostHandler(BaseHandler):
     def get(self):
         self.render_new_post()
     def post(self):
+
         subject = self.request.get("subject")
         content = self.request.get("content")
 
         if subject and content:
             post = Post(subject = subject, content = content)
             post.put()
+            self.top_posts(update=True)
             self.redirect("/blog/"+str(post.key().id()))
         else:
             error = "we need both a subject and content!"

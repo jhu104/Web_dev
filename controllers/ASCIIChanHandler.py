@@ -1,5 +1,6 @@
 from controllers.BaseHandler import BaseHandler
 from google.appengine.ext import db
+from google.appengine.api import memcache
 from models.Art import Art
 import urllib2
 from xml.dom import minidom
@@ -26,13 +27,22 @@ def gmaps_img(points):
     points_url = "&".join("markers="+str(point[0])+","+str(point[1]) for point in points)
     return GMAPS_URL+points_url
 
-class ASCIIChanHandler(BaseHandler):
-    
+def top_arts(update = False):
+    key = 'top'
+    arts = memcache.get(key)
 
-    def render_front(self, title="",art="",error=""):
-        arts = db.GqlQuery("SELECT * FROM Art ORDER BY created DESC LIMIT 10")
-        #prevents the running of multiple queries
+    if arts is None or update:
+        arts = db.GqlQuery( "SELECT * "
+                            "FROM Art "
+                            "ORDER BY created DESC "
+                            "LIMIT 10")
         arts = list(arts)
+        memcache.set(key, arts)
+    return arts
+
+class ASCIIChanHandler(BaseHandler):
+    def render_front(self, title="",art="",error=""):
+        arts = top_arts()
 
         points = []
         for art in arts:
@@ -58,7 +68,7 @@ class ASCIIChanHandler(BaseHandler):
             if coords:
                 art.coords = coords
             art.put()
-            
+            top_arts(update=True)
             self.redirect("/asciichan")
         else:
             error = "we need both a title and some artwork!"

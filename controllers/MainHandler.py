@@ -1,13 +1,14 @@
 from BaseHandler import BaseHandler
-from google.appengine.ext import db
+from datetime import datetime
 
 class MainHandler(BaseHandler):
     def render_front(self):
-        posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
-        posts = list(posts)
+        (posts, last_updated) = self.top_posts()
+        current_time = datetime.now()
+        difference = current_time - last_updated
 
         if self.format == 'html':
-            self.render("blog.html", posts=posts)
+            self.render("blog.html", posts=posts, seconds=difference.total_seconds())
         else:
             return self.render_json([post.as_dict() for post in posts])
 

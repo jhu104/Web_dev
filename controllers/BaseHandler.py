@@ -4,6 +4,9 @@ import os
 from security import hashing
 from models.User import User
 import json
+from google.appengine.ext import db
+from google.appengine.api import memcache
+from datetime import datetime
 
 template_dir = os.path.join(os.path.dirname(__file__), '../templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
@@ -51,3 +54,23 @@ class BaseHandler(webapp2.RequestHandler):
             self.format = 'json'
         else:
             self.format = 'html'
+        
+    def top_posts(self, update=False):
+        client = memcache.Client() 
+        key = 'top'
+        last_update_key = 'lastupdate'
+        posts = client.get(key)
+        last_update = client.get(last_update_key)
+        if posts is None or update:
+            print 'updating cache because of update signal'
+            posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
+            posts = list(posts)
+            result = client.set(key, posts)
+            if result:
+                last_update = datetime.now()
+                last_update = last_update.strftime('%b %d %Y %I:%M%p')
+                client.set(last_update_key, last_update)
+        last_update = datetime.strptime(last_update, '%b %d %Y %I:%M%p')
+        
+        return (posts, last_update)
+        
