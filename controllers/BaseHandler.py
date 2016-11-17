@@ -60,33 +60,26 @@ class BaseHandler(webapp2.RequestHandler):
     def top_posts(self, update=False):
         key = 'top'
         last_update_key = 'lastupdate'
-        posts = self.client.get(key)
-        last_update = self.client.get(last_update_key)
-        if posts is None or update:
+        res = self.client.get(key)
+        if res is None or update:
             posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
             posts = list(posts)
-            result = self.client.set(key, posts)
-            if result:
-                last_update = datetime.now()
-                last_update = last_update.strftime('%b %d %Y %I:%M%p')
-                self.client.set(last_update_key, last_update)
-        last_update = datetime.strptime(last_update, '%b %d %Y %I:%M%p')
+            last_update = datetime.utcnow()
+            res = (posts, last_update)
+            result = self.client.set(key, res)
         
-        return (posts, last_update)
+        return res
     
     def post(self, id, update=False):
         post_id = int(id)
-        post = self.client.get(id)
-        last_update = self.client.get(str(id)+'u')
-        if post is None or update:
+        res = self.client.get(id)
+        if res is None or update:
             post = Post.get_by_id(post_id)
-            self.client.set(id, post)
-            last_update = datetime.now()
-            last_update = last_update.strftime('%b %d %Y %I:%M%p')
-            self.client.set(str(id)+'u', last_update)
-        last_update = datetime.strptime(last_update, '%b %d %Y %I:%M%p')
-        return (post, last_update)
-
+            last_update = datetime.utcnow()
+            res = (post,last_update)
+            self.client.set(id, res)
+        return res
+    
     def clearCache(self):
         self.client.flush_all()
         self.redirect('/')

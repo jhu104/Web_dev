@@ -3,7 +3,7 @@ from datetime import datetime
 
 class MainHandler(BaseHandler):
     def render_front(self):
-        (posts, last_updated) = self.top_posts()
+        posts, last_updated = self.top_posts()
         current_time = datetime.now()
         difference = current_time - last_updated
 

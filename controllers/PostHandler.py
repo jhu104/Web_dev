@@ -3,8 +3,8 @@ from datetime import datetime
 
 class PostHandler(BaseHandler):
     def render_post(self, post_id, update=False):
-        (post, last_updated) = self.post(post_id)
-        current_time = datetime.now()
+        post, last_updated = self.post(post_id)
+        current_time = datetime.utcnow()
         difference = current_time - last_updated
 
         if not post:
