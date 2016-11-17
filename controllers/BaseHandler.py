@@ -3,6 +3,7 @@ import jinja2
 import os
 from security import hashing
 from models.User import User
+from models.Post import Post
 import json
 from google.appengine.ext import db
 from google.appengine.api import memcache
@@ -54,23 +55,34 @@ class BaseHandler(webapp2.RequestHandler):
             self.format = 'json'
         else:
             self.format = 'html'
+        self.client = memcache.Client()
         
     def top_posts(self, update=False):
-        client = memcache.Client() 
         key = 'top'
         last_update_key = 'lastupdate'
-        posts = client.get(key)
-        last_update = client.get(last_update_key)
+        posts = self.client.get(key)
+        last_update = self.client.get(last_update_key)
         if posts is None or update:
-            print 'updating cache because of update signal'
             posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC")
             posts = list(posts)
-            result = client.set(key, posts)
+            result = self.client.set(key, posts)
             if result:
                 last_update = datetime.now()
                 last_update = last_update.strftime('%b %d %Y %I:%M%p')
-                client.set(last_update_key, last_update)
+                self.client.set(last_update_key, last_update)
         last_update = datetime.strptime(last_update, '%b %d %Y %I:%M%p')
         
         return (posts, last_update)
-        
+    
+    def post(self, id, update=False):
+        post_id = int(id)
+        post = self.client.get(id)
+        last_update = self.client.get(str(id)+'u')
+        if post is None or update:
+            post = Post.get_by_id(post_id)
+            self.client.set(id, post)
+            last_update = datetime.now()
+            last_update = last_update.strftime('%b %d %Y %I:%M%p')
+            self.client.set(str(id)+'u', last_update)
+        last_update = datetime.strptime(last_update, '%b %d %Y %I:%M%p')
+        return (post, last_update)

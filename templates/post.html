@@ -3,4 +3,5 @@
 {% block content %}
 <h2>{{post.subject}} {{post.created}}</h2>
 <p>{{post.content}}</p>
+Queried {{seconds}} second{{"" if seconds<2 else "s"}} ago
 {% endblock %}
